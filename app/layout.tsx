@@ -19,6 +19,14 @@ const prose = Source_Sans_3({ subsets: ["latin"], variable: "--font-sans3" });
 export const metadata: Metadata = {
 	title: "Learning Harness",
 	description: "A teacher agent with a memory — sessions, quizzes, and a knowledge graph of what you know.",
+	// Installable web app (app/manifest.ts): the app supplies its own
+	// icons; iOS needs the Apple touch icon and the standalone capability
+	// meta explicitly. Chrome reads `mobile-web-app-capable` as the
+	// standard spelling of the same hint.
+	applicationName: "Learning Harness",
+	icons: { icon: "/icons/icon-192.png", apple: "/icons/apple-touch-icon.png" },
+	appleWebApp: { capable: true, title: "Learning Harness", statusBarStyle: "default" },
+	other: { "mobile-web-app-capable": "yes" },
 };
 
 /**
