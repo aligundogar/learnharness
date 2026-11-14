@@ -18,7 +18,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { randomUUID } from "node:crypto";
-import { ATTACHMENTS_DIR, safeRelativePath, writeUpload } from "@/src/server/attachments";
+import { ATTACHMENTS_DIR, safeRelativePath, writeUpload } from "@/src/server";
 
 const MAX_BODY_BYTES = 100 * 1024 * 1024;
 const MAX_FILES = 40;
