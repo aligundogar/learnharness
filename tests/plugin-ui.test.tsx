@@ -420,7 +420,9 @@ describe("controlled plugin UI", () => {
 		const { document } = parseHTML(renderToStaticMarkup(<ModelPickerPill>Fixture model</ModelPickerPill>));
 		const trigger = document.querySelector("button")!;
 		for (const token of ["font-ui", "text-xs"]) assert.ok(trigger.classList.contains(token), token);
-		assert.equal(trigger.querySelector("span")!.className, "text-card-foreground", "label color stays native foreground");
+		// Token membership, not the whole class string (mobile pass added
+		// truncation classes to the label — the contract is the ink color).
+		assert.ok(trigger.querySelector("span")!.classList.contains("text-card-foreground"), "label color stays native foreground");
 		assert.equal(trigger.querySelector("[aria-hidden]")!.className, "text-xs text-muted-foreground");
 	});
 
