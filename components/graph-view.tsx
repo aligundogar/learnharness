@@ -833,7 +833,7 @@ export function GraphChromeRow({
 	return (
 		<>
 			{!isEmpty && (
-				<div className="graph-chrome-fade-in w-56 min-w-0 shrink rounded-xl border bg-card/85 px-1 py-[3px] shadow-lg backdrop-blur">
+				<div className="graph-chrome-fade-in w-56 min-w-0 shrink rounded-xl border bg-card/85 px-1 py-[3px] shadow-lg backdrop-blur narrow:w-auto narrow:flex-1">
 					<Hint
 						// ⌘F focuses node search (surface-scoped registry action).
 						label="Search nodes"
@@ -866,10 +866,13 @@ export function GraphChromeRow({
 							type="button"
 							onClick={onOpenChains}
 							data-testid="open-chain-table"
+							aria-label="Every reasoning chain"
 							className="flex h-7 items-center gap-1.5 rounded-lg px-2.5 text-xs text-muted-foreground transition-colors hover:bg-accent"
 						>
 							<ListTreeIcon className="size-3" />
-							Chains
+							{/* Icon-only on phones (mobile pass): three labelled
+							    actions beside a shrinking search do not fit 390px. */}
+							<span className="narrow:hidden">Chains</span>
 						</button>
 					</Hint>
 				</div>
@@ -1536,7 +1539,11 @@ export function GraphView({
 			    the settings/coverage dropdowns (owner report), still hoverable
 			    and clickable on top of them. The row is a stacking context, so
 			    its open dropdowns cover the number; clicks land on the panel. */}
-			<div className="relative z-20 flex min-w-0 items-start gap-2">
+			{/* narrow:w-full (mobile pass, 2026-11-20): a column with items-end
+			    sizes this row by content, so a phone pushed the row past the
+			    clamp at the LEFT — it covered the sidebar toggle. Pinning the
+			    row to the column's width lets the search shrink as designed. */}
+			<div className="relative z-20 flex min-w-0 items-start gap-2 narrow:w-full">
 				{/* The actions row (empty-graph chrome wave, owner 2026-09-25):
 				    Import Notes always — the empty graph's entry point; search +
 				    settings only when nodes exist, fading in on their mount. */}

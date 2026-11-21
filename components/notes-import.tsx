@@ -112,8 +112,12 @@ export function NotesImportControl({ importing, onImportFiles }: { importing: bo
 			<input ref={folderRef} type="file" {...{ webkitdirectory: "" }} className="hidden" onChange={onChange} />
 			<Hint label="Extract files into the graph" side="bottom">
 				<button type="button" onClick={() => setOpen(!open)} aria-expanded={open} aria-haspopup="menu" data-testid="import-notes"
+					aria-label="Extract files into the graph"
 					className="flex h-7 items-center gap-1.5 rounded-lg px-2.5 text-xs text-muted-foreground transition-colors hover:bg-accent">
-					<WaypointsIcon className="size-3" />{importing ? "Extracting…" : "Extract files…"}
+					<WaypointsIcon className="size-3" />
+					{/* Icon-only on phones (mobile pass, 2026-11-20): the label is
+					    14 characters of a 390px header row. */}
+					<span className="narrow:hidden">{importing ? "Extracting…" : "Extract files…"}</span>
 				</button>
 			</Hint>
 			{open && (

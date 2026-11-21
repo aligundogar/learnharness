@@ -32,6 +32,26 @@ hints and dense targets.
 - Safe-area tokens (`--lh-safe-*`) exist for edge-pinned surfaces. The app shell stays
   inside the browser's own insets: `viewport-fit=cover` is not adopted yet.
 
+## Header chrome and the under-composer bar
+
+Two rows are sized by fittable content rather than by a fixed grid, so they need explicit
+narrow rules:
+
+- **Home header controls** (node search, Chains, Extract files, settings) sit in a
+  right-aligned column. A column sizes its children by content, so an unconstrained row
+  grows past the column's clamp at the LEFT — on a phone it covered the sidebar toggle.
+  `narrow:w-full` pins the row to the column and lets the search be the element that
+  shrinks; the action buttons keep their icon and drop their label (`narrow:hidden`, with
+  `aria-label` on the button).
+- **Under-composer row** (mode switch or session stats, dictation, model, thinking level)
+  cannot fit four controls at 390px. Below 640px the row wraps: the dictation slot keeps
+  its button width (`narrow:flex-none`) instead of collapsing to zero and spilling over
+  its neighbours, and the model group moves to its own right-aligned line
+  (`narrow:ml-auto`). Numbers stay `whitespace-nowrap`; long model ids truncate rather
+  than wrap.
+
+At 640px and above both rows keep their one-line desktop layout.
+
 ## Rules for new UI
 
 1. Use the `narrow:` variant for layout, `coarse:` for input ergonomics. Do not add JS
@@ -47,6 +67,7 @@ hints and dense targets.
 - Breakpoint, variants, viewport and safe-area tokens: this change.
 - Sidebar drawer below 640px: separate change.
 - Session chrome (title, dock hints, dictation): separate change.
+- Header chrome row and under-composer bar overflow: separate change.
 
 Settings, the side-question panel, the plan map and diagram overlays, and plugin UIs keep
 their desktop geometry below 640px. The touch-target sweep (40px floor on coarse
