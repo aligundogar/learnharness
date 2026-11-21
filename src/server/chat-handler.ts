@@ -36,6 +36,7 @@ import { effectiveSettings, stores } from "./stores.ts";
 import { getPluginAgentContributions, getPluginHost } from "./plugins.ts";
 import { preparePluginQuestionSubmission, reconcilePluginQuestionCompatibility, type QuestionTypeResolver } from "./plugin-questions.ts";
 import { searchAvailable, searchProvider } from "./search.ts";
+import { alphaxivProvider } from "./alphaxiv.ts";
 import { prepareSubmissionImages, prepareSubmissionImageChannels, prepareProblemSubmissionImageChannels, submissionImagePolicyKey } from "./submission-images.ts";
 import { preparePluginProblemSubmission, requirePluginProblemTarget, type ProblemTypeResolver } from "./plugin-problems.ts";
 import { providerKeyPresent } from "./keys.ts";
@@ -128,6 +129,9 @@ const jobRunner = createJobRunner({
 	// null = honestly unavailable; the dispatch-level drop (below) uses the
 	// same signal so keyless servers never see the research tool at all.
 	searchProvider,
+	// alphaXiv wave (2026-11-21): same shape — the paper tools resolve their
+	// provider per job, so adding or rotating the key needs no restart.
+	alphaxivProvider,
 });
 /** The app's ONE extraction pipeline instance — both front doors share it:
  *  quiz-triggered session runs (turn-service) and notes imports

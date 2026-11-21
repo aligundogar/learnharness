@@ -72,6 +72,12 @@ export const AUTH_KEYS: readonly AuthKeyInfo[] = [
 		description: "Self-hosted, keyless web search — the value is the instance base URL (e.g. http://127.0.0.1:8080). Setting it activates the engine.",
 		docsUrl: "https://docs.searxng.org/",
 	},
+	{
+		id: "ALPHAXIV_API_KEY",
+		label: "alphaXiv",
+		description: "Academic-paper research for the researcher sub-agent: search arXiv, read one paper, ask questions over its text. Setting the key enables the alphaXiv tools.",
+		docsUrl: "https://www.alphaxiv.org/",
+	},
 ] as const;
 
 const AUTH_KEY_IDS: ReadonlySet<string> = new Set(AUTH_KEYS.map((k) => k.id));
@@ -209,6 +215,10 @@ export function validateKeyShape(id: string, rawValue: string): KeyShapeResult {
 		case "DEEPGRAM_API_KEY":
 			// No public format — the length floor only catches truncated pastes.
 			return nonEmpty(20);
+		case "ALPHAXIV_API_KEY":
+			return value.startsWith("axv2_")
+				? nonEmpty(20)
+				: { ok: false, error: `${id} must start with "axv2_" (alphaXiv's key format)` };
 		case "SEARXNG_URL": {
 			// The value is an instance base URL, not a secret: an http(s) URL
 			// with no whitespace (truncated pastes and paths that would break

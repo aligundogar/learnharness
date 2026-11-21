@@ -15,7 +15,7 @@ describe("the catalog", () => {
 	it("lists the curated app-service keys (provider keys live in the provider table)", () => {
 		assert.deepEqual(
 			AUTH_KEYS.map((k) => k.id),
-			["DEEPGRAM_API_KEY", "TAVILY_API_KEY", "BRAVE_API_KEY", "EXA_API_KEY", "FIRECRAWL_API_KEY", "OLLAMA_API_KEY", "SEARXNG_URL"],
+			["DEEPGRAM_API_KEY", "TAVILY_API_KEY", "BRAVE_API_KEY", "EXA_API_KEY", "FIRECRAWL_API_KEY", "OLLAMA_API_KEY", "SEARXNG_URL", "ALPHAXIV_API_KEY"],
 		);
 		for (const k of AUTH_KEYS) {
 			assert.ok(k.label.length > 0, `${k.id} has a label`);
@@ -58,6 +58,12 @@ describe("validateKeyShape (the 400 gate — curated keys)", () => {
 		assert.ok(!validateKeyShape("FIRECRAWL_API_KEY", "fc-").ok, "prefix alone is a truncation");
 		assert.ok(!validateKeyShape("FIRECRAWL_API_KEY", "fc-0123456789 abcdef0123").ok, "whitespace fails");
 		assert.ok(!validateKeyShape("FIRECRAWL_API_KEY", "  ").ok, "empty fails");
+	});
+
+	it("alphaXiv: axv2_ prefix required, length floor past it", () => {
+		assert.ok(validateKeyShape("ALPHAXIV_API_KEY", "axv2_0123456789abcdef0123456789").ok);
+		assert.ok(!validateKeyShape("ALPHAXIV_API_KEY", "fc-0123456789abcdef0123").ok, "wrong family");
+		assert.ok(!validateKeyShape("ALPHAXIV_API_KEY", "axv2_").ok, "prefix alone is a truncation");
 	});
 
 	it("Brave: no public format — a ≥20-char truncation guard, no whitespace", () => {
